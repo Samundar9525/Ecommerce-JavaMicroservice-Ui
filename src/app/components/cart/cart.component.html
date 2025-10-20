@@ -1,125 +1,135 @@
 <div class="cart-container">
   <div class="cart-content">
+    <mat-tab-group class="full-width-tabs">
+      <mat-tab label="My Cart">
+        <div class="tab-content">
+          <!-- CART ITEMS -->
+          <div class="cart-items-section">
+            <mat-card class="cart-items-card">
+              <mat-card-content>
+                <table mat-table [dataSource]="cartItems" class="cart-table" *ngIf="cartItems.length > 0; else noData">
 
-    <!-- CART ITEMS -->
-    <div class="cart-items-section">
-      <mat-card class="cart-items-card">
-        <mat-card-content>
-          <table mat-table [dataSource]="cartItems" class="cart-table" *ngIf="cartItems.length > 0; else noData">
+                  <!-- Product Column -->
+                  <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef>Product</th>
+                    <td mat-cell *matCellDef="let item">
+                      <div class="product-info">
+                        <img [src]="item.imageUrl || 'assets/comingsoon.jpg'" class="product-image" alt="{{ item.productName || 'Product' }}" />
+                        <div class="product-details">
+                          <div class="product-name" matTooltip="{{ item.productName || 'Unknown Product' }}">
+                            {{ item.productName || 'Unknown Product' }}
+                          </div>
+                          <div class="product-meta">
+                            SIZE: {{ item.size || 'XX' }} | Brand: {{ item.brand || 'Unknown' }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
 
-            <!-- Product Column -->
-            <ng-container matColumnDef="product">
-              <th mat-header-cell *matHeaderCellDef>Product</th>
-              <td mat-cell *matCellDef="let item">
-                <div class="product-info">
-                  <img [src]="item.imageUrl || 'assets/comingsoon.jpg'" class="product-image" alt="{{ item.productName || 'Product' }}" />
-                  <div class="product-details">
-                    <div class="product-name" matTooltip="{{ item.productName || 'Unknown Product' }}">
-                      {{ item.productName || 'Unknown Product' }}
-                    </div>
-                    <div class="product-meta">
-                      SIZE: {{ item.size || 'XX' }} | Brand: {{ item.brand || 'Unknown' }}
-                    </div>
+                  <!-- Quantity Column -->
+                  <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                    <td mat-cell *matCellDef="let item">
+                      <mat-form-field appearance="outline" class="quantity-field">
+                        <mat-select [(ngModel)]="item.quantity" (selectionChange)="onQuantityChange(item)">
+                          <mat-option *ngFor="let qty of [1,2,3,4,5]" [value]="qty">{{ qty }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                  <!-- Price Column -->
+                  <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef>Price</th>
+                    <td mat-cell *matCellDef="let item">
+                      <div class="price-info">
+                        <div class="current-price">₹{{ item.price || 0 }}</div>
+                        <div class="discounted-price">₹{{item.price/item.quantity | number : '1.0-0' }} each</div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let item">
+                      <div class="action-buttons">
+                        <button mat-icon-button color="accent" (click)="addToWishlist(item)" matTooltip="Add to Wishlist">
+                          <mat-icon>favorite</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="removeItem(item)" matTooltip="Remove Item">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <!-- No Data -->
+                <ng-template #noData>
+                  <div class="no-data-message">
+                    🛒 No items in your cart yet!
                   </div>
+                </ng-template>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- PRICE SUMMARY -->
+          <div class="summary-section">
+            <!-- Coupon Card -->
+            <mat-card class="coupon-card">
+              <mat-card-content>
+                <form>
+                  <mat-form-field appearance="outline" class="coupon-field">
+                    <mat-label>Have coupon?</mat-label>
+                    <input matInput placeholder="Coupon code" />
+                    <button matSuffix mat-raised-button color="primary" type="button">Apply</button>
+                  </mat-form-field>
+                </form>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Summary Card -->
+            <mat-card class="summary-card">
+              <mat-card-content>
+                <div class="summary-item">
+                  <span>Total price:</span>
+                  <span>₹{{ getTotalPrice() }}</span>
                 </div>
-              </td>
-            </ng-container>
-
-            <!-- Quantity Column -->
-            <ng-container matColumnDef="quantity">
-              <th mat-header-cell *matHeaderCellDef>Quantity</th>
-              <td mat-cell *matCellDef="let item">
-                <mat-form-field appearance="outline" class="quantity-field">
-                  <mat-select [(ngModel)]="item.quantity">
-                    <mat-option *ngFor="let qty of [1,2,3,4,5]" [value]="qty">{{ qty }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-            </ng-container>
-
-            <!-- Price Column -->
-            <ng-container matColumnDef="price">
-              <th mat-header-cell *matHeaderCellDef>Price</th>
-              <td mat-cell *matCellDef="let item">
-                <div class="price-info">
-                  <div class="current-price">₹{{ item.price || 0 }}</div>
-                  <div class="discounted-price">₹{{item.price/item.quantity | number : '1.0-0' }} each</div>
+                <div class="summary-item discount">
+                  <span>Discount:</span>
+                  <span>- ₹{{ getTotalDiscount() }}</span>
                 </div>
-              </td>
-            </ng-container>
-
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Actions</th>
-              <td mat-cell *matCellDef="let item">
+                <div class="summary-item total">
+                  <span>Total:</span>
+                  <span><strong>₹{{ getFinalTotal() }}</strong></span>
+                </div>
+                <mat-divider></mat-divider>
                 <div class="action-buttons">
-                  <button mat-icon-button color="accent" (click)="addToWishlist(item)" matTooltip="Add to Wishlist">
-                    <mat-icon>favorite</mat-icon>
+                  <button mat-raised-button color="primary" class="full-width" (click)="purchase()">
+                    Make Purchase
                   </button>
-                  <button mat-icon-button color="warn" (click)="removeItem(item)" matTooltip="Remove Item">
-                    <mat-icon>delete</mat-icon>
+                  <button mat-raised-button color="accent" class="full-width" (click)="continueShopping()">
+                    Continue Shopping
                   </button>
                 </div>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-
-          <!-- No Data -->
-          <ng-template #noData>
-            <div class="no-data-message">
-              🛒 No items in your cart yet!
-            </div>
-          </ng-template>
-
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <!-- PRICE SUMMARY -->
-    <div class="summary-section">
-      <!-- Coupon Card -->
-      <mat-card class="coupon-card">
-        <mat-card-content>
-          <form>
-            <mat-form-field appearance="outline" class="coupon-field">
-              <mat-label>Have coupon?</mat-label>
-              <input matInput placeholder="Coupon code" />
-              <button matSuffix mat-raised-button color="primary" type="button">Apply</button>
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Summary Card -->
-      <mat-card class="summary-card">
-        <mat-card-content>
-          <div class="summary-item">
-            <span>Total price:</span>
-            <span>₹{{ getTotalPrice() }}</span>
+              </mat-card-content>
+            </mat-card>
           </div>
-          <div class="summary-item discount">
-            <span>Discount:</span>
-            <span>- ₹{{ discount }}</span>
-          </div>
-          <div class="summary-item total">
-            <span>Total:</span>
-            <span><strong>₹{{ getFinalTotal() }}</strong></span>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="action-buttons">
-            <button mat-raised-button color="primary" class="full-width" (click)="purchase()">
-              Make Purchase
-            </button>
-            <button mat-raised-button color="accent" class="full-width" (click)="continueShopping()">
-              Continue Shopping
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+        </div>
+      </mat-tab>
 
+      <mat-tab label="Past Orders">
+        <div class="tab-content">
+          <app-past-orders></app-past-orders>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,8 +10,18 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
-  addProductTocart() {
-    //    to be done
+  addProductTocart(cartId: string, productId: number, price: number, quantity: number): Observable<any> {
+    const url = `${this.api}/cart/${cartId}`;
+    const payload = {
+      cartId: cartId,
+      productId: productId,
+      price: price,
+      quantity: quantity
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, payload, { headers });
   }
 
   getCartDetails(cartId: String): Observable<any> {
@@ -29,7 +39,30 @@ export class CartService {
     return this.http.get(`http://localhost:8081/products/${id}`);
   }
 
-  placeOrder() {
-    //    to be done
+  deleteProductFromCart(cartId: string, productId: number): Observable<any> {
+    const url = `${this.api}/cart/delete?cartId=${cartId}&productId=${productId}`;
+    return this.http.delete(url);
+  }
+
+  updateProductQuantity(cartId: string, productId: number, price: number, quantity: number): Observable<any> {
+    const url = `${this.api}/cart/${cartId}`;
+    const payload = {
+      cartId: cartId,
+      productId: productId,
+      price: price,
+      quantity: quantity
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch(url, payload, { headers, responseType: 'text' });
+  }
+
+  placeOrder(cartId: string, productIds: number[]): Observable<any> {
+    const url = `${this.api}/cart/${cartId}/placeOrder`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, productIds, { headers, responseType: 'text' });
   }
 }

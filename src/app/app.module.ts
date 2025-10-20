@@ -9,6 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CartComponent } from './components/cart/cart.component';
+import { PastOrdersComponent } from './components/past-orders/past-orders.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -32,7 +36,8 @@ import { FormsModule } from '@angular/forms';
     HeaderComponent,
     AuthComponent,
     DashboardComponent,
-    CartComponent
+    CartComponent,
+    PastOrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,9 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule,
     MatInputModule,
     MatDividerModule,
+    MatExpansionModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     MatSnackBarModule,
     MatTooltipModule,

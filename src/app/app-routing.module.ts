@@ -4,6 +4,7 @@ import { ProductListComponent as ProductsComponent } from './components/product-
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { CartComponent } from './components/cart/cart.component';
+import { PastOrdersComponent } from './components/past-orders/past-orders.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, children: [
     { path: '', redirectTo: 'products', pathMatch: 'full' },
     { path: 'products', component: ProductsComponent },
-    { path: 'cart', component: CartComponent }
+    { path: 'cart', component: CartComponent },
+    { path: 'past-orders', component: PastOrdersComponent }
   ] },
 ];
 

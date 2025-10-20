@@ -18,7 +18,14 @@ export class ProductCardComponent {
   @Output() addToCartEvent = new EventEmitter();
 
   addToCart() {
-    this.addToCartEvent.emit(this.productId);
+    const selectedProduct = {
+      productId: this.productId,
+      productName: this.productName,
+      category: this.category,
+      price: this.price,
+      quantity: 1
+      }
+    this.addToCartEvent.emit(selectedProduct);
   }
 
   get stars(): number[] {

@@ -1,13 +1,13 @@
 .product-card {
-  width: 250px;
-  border-radius: 15px;
+  width: 200px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
   cursor: pointer;
   position: relative;
   font-family: 'Segoe UI', sans-serif;
-  margin: 20px auto;
+  margin: 15px auto;
   background: #fff;
 
   &:hover {
@@ -30,7 +30,7 @@
   }
 
   .img-container {
-    height: 200px;
+    height: 150px;
     overflow: hidden;
     display: flex;
     justify-content: space-around;
@@ -55,17 +55,15 @@
   }
 
   .title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #18181b;
-    margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
+    color: #18181b;
+    margin-bottom: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
-    max-width: 220px; /* adjust width as per your layout */
+    max-width: 170px; /* adjust width as per your layout */
     cursor: pointer;
   }
 
@@ -78,7 +76,7 @@
     }
 
     .new {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 700;
       color: #18181b;
     }
