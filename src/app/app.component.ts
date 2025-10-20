@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Ecommerce-Ui';
+
+  ngOnDestroy() {
+    sessionStorage.removeItem("user_id");
+    sessionStorage.removeItem("cart_id");
+    sessionStorage.removeItem("user_name");
+  }
 }

@@ -1,0 +1,15 @@
+<div class="product-grid">
+  <app-product-card
+    *ngFor="let item of products"
+    [productId]="item.productId"
+    [productName]="item.productName"
+    [category]="item.category"
+    [price]="item.price"
+    [discountedPrice]="item.discountedPrice"
+    [rating]="item.rating"
+    [noOfRatings]="item.noOfRatings"
+    [imageUrl]="item.imageUrl"
+    (addToCartEvent)="cartHandler($event)"
+    >
+  </app-product-card>
+</div>

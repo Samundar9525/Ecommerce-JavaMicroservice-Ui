@@ -1,0 +1,5 @@
+.content-wrapper {
+  margin-top: 60px; /* Height of the fixed header */
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+}

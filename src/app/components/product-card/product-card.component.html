@@ -1,0 +1,33 @@
+<mat-card class="product-card" appearance="outlined">
+  <div class="badge" *ngIf="discountedPrice < price">HOT SALE</div>
+
+  <div class="img-container">
+    <img mat-card-image [src]="imageUrl" [alt]="productName" />
+  </div>
+
+  <mat-card-content>
+    <div class="cat">{{ category }}</div>
+    <h2 class="title" matTooltip="{{productName}}">{{ productName }}</h2>
+    <div class="price">
+      <span class="new">₹ {{ discountedPrice }}</span>
+      <span class="old" *ngIf="discountedPrice < price"> \{{ price }}₹</span>
+    </div>
+
+    <div class="rating">
+      <ng-container *ngFor="let s of stars">
+        <mat-icon color="warn">star</mat-icon>
+      </ng-container>
+      <ng-container *ngFor="let s of emptyStars">
+        <mat-icon color="warn">star_border</mat-icon>
+      </ng-container>
+      <span class="rcount">{{ noOfRatings }} Reviews</span>
+    </div>
+  </mat-card-content>
+
+  <div class="card-actions">
+    <button mat-raised-button color="primary" class="btn-full-width" (click)="addToCart()">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Add to Cart
+    </button>
+  </div>
+</mat-card>

@@ -1,0 +1,9 @@
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+  justify-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 100%);
+  min-height: 100vh;
+}
